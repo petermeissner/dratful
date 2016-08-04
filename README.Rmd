@@ -1,0 +1,56 @@
+---
+output: github_document
+---
+
+
+```{r, include=FALSE}
+tmp <- packageDescription("dratful")
+```
+
+```{r, results='asis', echo=FALSE}
+cat("#", tmp$Title)
+```
+
+
+**Version**
+
+```{r, results='asis', echo=FALSE}
+cat(tmp$Version)
+```
+
+
+**Description**
+
+```{r, results='asis', echo=FALSE}
+cat(tmp$Description)
+```
+
+
+**License**
+
+```{r, results='asis', echo=FALSE}
+cat(tmp$License)
+```
+
+
+**Installation**
+
+(stable) developement versions: 
+
+```{r, eval=FALSE}
+install.packages("dratful", repos = "https://petermeissner.github.io/drat/")
+```
+
+**Example Usage**
+
+The following will:
+
+- check the package using `devtools::check()`
+- then (if no errors and warnings were produced) build it into a temporary directory using `devtools::build()`
+- then insert it into the drat repo (defaults to `~/git/drat`) using `drat::insertPackage()`
+
+
+
+```{r, eval=FALSE}
+dratful::check_build_publish()
+```

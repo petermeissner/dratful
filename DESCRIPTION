@@ -1,13 +1,14 @@
 Package: dratful
 Type: Package
 Title: Convenience wrapper for 'drat' and 'devtools'
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: person("Peter", "Meissner", email = "retep.meissner@gmail.com", role = c("aut", "cre"))
 Description: Building packages with 'devtools' is easy. Publishing packages
     with 'drat' is easy too. Combining both is two lines of
     code too much - hence 'dratful'. The package aims at making the
     check-build-publish workflow a super easy one-liner.
 License: MIT + file LICENSE
+Depends: R (>= 3.0.0)
 Imports:
     drat (>= 0.1.0),
     devtools (>= 1.12.0)

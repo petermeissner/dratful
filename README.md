@@ -4,7 +4,7 @@ Convenience wrapper for 'drat' and 'devtools'
 
 **Version**
 
-0.1.0
+0.1.1
 
 **Description**
 

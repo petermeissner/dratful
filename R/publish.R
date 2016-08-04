@@ -1,3 +1,19 @@
+#' the ultimative shortcut all-default function to check_build_publish()
+#' @export
+drat <- function(){check_build_publish()}
+
+
+#' installing from a github hosted drat and CRAN
+#' @param pkg name of the package to be installed
+#' @param username github username
+#' @export
+install_drat <- function(pkg, username="ghrr"){
+  repos <- options("repos")$repos
+  repos <- c(repos, drat=paste0("https://",username,".github.io/drat"))
+  install.packages(pkg, repos = repos)
+}
+
+
 #' check - build and publish
 #' @inheritParams devtools::build
 #' @inheritParams drat::insertPackage

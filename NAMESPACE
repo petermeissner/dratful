@@ -2,3 +2,5 @@
 
 export(build_publish)
 export(check_build_publish)
+export(drat)
+export(install_drat)

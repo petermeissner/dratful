@@ -1,6 +1,52 @@
 #' the ultimative shortcut all-default function to check_build_publish()
+#' @inheritParams devtools::build
+#' @inheritParams drat::insertPackage
 #' @export
-drat <- function(){check_build_publish()}
+dratful <-
+  function(pkg=".", repodir=getOption("dratRepo", "~/git/drat")){
+    res <- list()
+    git <- list()
+    # commit message
+    desc    <- read_dcf(pkg)
+    git_message <- paste(desc$Package, desc$Version, "[ dratful::dratful() ]")
+    # try to access repo and make repo object
+    repo <- tryCatch(
+      git2r::repository(repodir),
+      error = function(e){
+        FALSE
+      }
+    )
+    # git : pull
+    git$pull <- git_pull(repo)
+    # build package : check, build, put in repo
+    res1 <- check_build_publish(pkg = pkg, repodir = repodir)
+    if(res1$success){
+      res2 <- check_build_publish(pkg = pkg, repodir = repodir, binary=TRUE)
+    }else{
+      return( list(source_package = res1, git = git) )
+    }
+    # git : add, commit, push
+    if( res2$success ){
+      git$add    <- git_add(repo)
+      git$commit <- git_commit(repo, message=git_message)
+      git$push   <- git_push(repo)
+    }else{
+      git$add    <- git_add(repo)
+      git$commit <- git_commit(repo, message=git_message)
+      git$push   <- FALSE
+    }
+    # return
+    return( list(source_package=res1, binary_package=res2, git=git) )
+  }
+
+#' the ultimative shortcut all-default function to check_build_publish()
+#' @inheritParams devtools::build
+#' @inheritParams drat::insertPackage
+#' @export
+drat <-
+  function(pkg=".", repodir=getOption("dratRepo", "~/git/drat")){
+    check_build_publish(pkg = pkg, repodir = repodir)
+  }
 
 
 #' installing from a github hosted drat and CRAN
@@ -10,7 +56,7 @@ drat <- function(){check_build_publish()}
 install_drat <- function(pkg, username="ghrr"){
   repos <- options("repos")$repos
   repos <- c(repos, drat=paste0("https://",username,".github.io/drat"))
-  install.packages(pkg, repos = repos)
+  utils::install.packages(pkg, repos = repos)
 }
 
 

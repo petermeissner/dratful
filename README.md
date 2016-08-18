@@ -4,11 +4,11 @@ Convenience wrapper for 'drat' and 'devtools'
 
 **Version**
 
-0.1.3
+0.1.5
 
 **Description**
 
-Building packages with 'devtools' is easy. Publishing packages with 'drat' is easy too. Combining both is two lines of code too much - hence 'dratful'. The package aims at making the check-build-publish workflow a super easy one-liner.
+Building packages with 'devtools' is easy. Publishing packages with 'drat' is easy too. Combining both is two lines of code too much - hence 'dratful' - drat at it's fullest. The package aims at making the check-build-publish workflow a super easy one-liner - E.g. 'dratful::dratful()' will build, check, commit and push source and binary packages if all checks were passed any without error or warning. Use 'dratful::drat()' for leaving Git handling out.
 
 **License**
 

@@ -1,3 +1,119 @@
+#' extrac package names and version from PACKAGES file
+#' @param p_description content of a PACKAGES file
+#' @keywords internal
+dsc_content <- function(p_description){
+  versions <- grep("^Version: (\\d.*)", p_description, value=TRUE)
+  versions <- regmatches(versions, regexpr("\\d\\S*", versions))
+  packages <- grep("^Package", p_description, value = TRUE)
+  packages <-
+    unlist(
+      lapply(
+        regmatches(packages, regexpr("Package: ", packages), invert = TRUE),
+        `[`,
+        2)
+    )
+  paste(packages, versions, sep=" : ")
+}
+
+#' make index.html and README.md from PACKAGES files
+#' @inheritParams drat
+#' @keywords internal
+make_index_files <- function(repodir){
+  p_files       <- list.files(repodir, "PACKAGES$", recursive=TRUE, full.names = TRUE)
+  p_description <- lapply(p_files, readLines)
+  p_names <- unlist(regmatches(p_files, regexpr("bin.*|src.*", p_files)))
+  residents <- lapply(p_description, dsc_content)
+  head <- '<!DOCTYPE html>\n<html>\n<head>\n<meta charset="utf-8">\n<title>drat repo</title>\n</head><body>'
+  content <- '
+<h1>R package repository (drat)</h1>
+<p>Visit https://github.com/eddelbuettel/drat and https://github.com/petermeissner/dratful to learn more.</p>
+<p>Use the following to install packages from the repository:</p>
+
+<pre>
+install.packages(
+  pkgs  = "package_name",
+  repos =
+    c(
+      options("repos")$repos,
+      "path_to_repository"
+    )
+)
+</pre>
+
+
+<p>the following packages reside within the repository:<p>
+<pre>
+'
+  foot <- '</pre></body></html>'
+  content2 <- character()
+    for(i in seq_along(p_names)){
+      content2 <-
+        c(
+          content2,
+          paste(
+            p_names[i],
+            paste0(
+              residents[[i]],
+              collapse = "\n"
+            ),
+            sep="\n\n")
+        )
+    }
+  content2 <- paste(content2, collapse = "\n\n\n")
+
+  if(grepl("/$",repodir)){
+    index_fname <- paste(repodir, "index.html", sep="")
+  }else{
+    index_fname <- paste(repodir, "index.html", sep="/")
+  }
+
+  writeLines(
+    c(head, content, content2, foot),
+    index_fname
+  )
+
+  head <- "
+# R package repository (drat)
+
+Visit https://github.com/eddelbuettel/drat and https://github.com/petermeissner/dratful to learn more
+
+Use the following to install packages from the repository:
+
+```r
+install.packages(
+  pkgs  = 'package_name',
+  repos = c( options('repos')$repos, 'path_to_repository' )
+)
+```
+the following packages reside within the repository:
+
+"
+
+  if(grepl("/$",repodir)){
+    readme_fname <- paste(repodir, "README.md", sep="")
+  }else{
+    readme_fname <- paste(repodir, "README.md", sep="/")
+  }
+
+  writeLines(
+    c(head, "```", content2, "```"),
+    readme_fname
+  )
+}
+
+
+
+#' installing from a github hosted drat and CRAN
+#' @param pkg name of the package to be installed
+#' @param username github username
+#' @export
+install_drat <- function(pkg, username="ghrr"){
+  repos <- options("repos")$repos
+  repos <- c(repos, drat=paste0("https://",username,".github.io/drat"))
+  utils::install.packages(pkg, repos = repos)
+}
+
+
 #' git_pull
 #' @param repo a git2r::repository() object
 #' @keywords internal

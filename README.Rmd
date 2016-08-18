@@ -4,7 +4,7 @@ output: github_document
 
 
 ```{r, include=FALSE}
-tmp <- packageDescription("dratful")
+tmp <- devtools:::read_dcf("DESCRIPTION")
 ```
 
 ```{r, results='asis', echo=FALSE}
@@ -38,7 +38,14 @@ cat(tmp$License)
 (stable) developement versions: 
 
 ```{r, eval=FALSE}
-install.packages("dratful", repos = "https://petermeissner.github.io/drat/")
+install.packages(
+  "dratful",
+  repos = 
+    c(
+      options("repos")$repos, 
+      "https://petermeissner.github.io/drat/"
+    )
+)
 ```
 
 **Putting packages into your repository (your own CRAN, your drat, ...)**

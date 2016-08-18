@@ -35,6 +35,8 @@ dratful <-
       git$commit <- git_commit(repo, message=git_message)
       git$push   <- FALSE
     }
+    # add README.md and and index.html
+    make_index_files(repodir)
     # return
     return( list(source_package=res1, binary_package=res2, git=git) )
   }
@@ -49,15 +51,6 @@ drat <-
   }
 
 
-#' installing from a github hosted drat and CRAN
-#' @param pkg name of the package to be installed
-#' @param username github username
-#' @export
-install_drat <- function(pkg, username="ghrr"){
-  repos <- options("repos")$repos
-  repos <- c(repos, drat=paste0("https://",username,".github.io/drat"))
-  utils::install.packages(pkg, repos = repos)
-}
 
 
 #' check - build and publish

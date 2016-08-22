@@ -4,7 +4,6 @@
 #' @export
 dratful <-
   function(pkg=".", repodir=getOption("dratRepo", "~/git/drat")){
-    res <- list()
     git <- list()
     # commit message
     desc    <- read_dcf(pkg)
@@ -21,7 +20,12 @@ dratful <-
     # build package : check, build, put in repo
     res1 <- check_build_publish(pkg = pkg, repodir = repodir)
     if(res1$success){
-      res2 <- check_build_publish(pkg = pkg, repodir = repodir, binary=TRUE)
+      if( grepl("linux", utils::sessionInfo()$platform) ){
+        res2 <- list(success=FALSE)
+        message("building binary on linux is not supported and skipped")
+      }else{
+        res2 <- check_build_publish(pkg = pkg, repodir = repodir, binary=TRUE)
+      }
     }else{
       return( list(source_package = res1, git = git) )
     }
@@ -67,7 +71,7 @@ check_build_publish <-
     binary    = FALSE,
     path      = tempdir(),
     repodir   = getOption("dratRepo", "~/git/drat") ,
-    action    = "archive",
+    action    = "none",
     commit    = FALSE,
     vignettes = TRUE,
     manual    = FALSE,
@@ -75,7 +79,7 @@ check_build_publish <-
     quiet     = FALSE,
     ...
   ){
-  check <- devtools::check(pkg=pkg, ...)
+  check <- devtools::check(pkg=pkg, quiet=TRUE, ...)
   if( length(check$errors)+length(check$warnings) > 0 ){
     return(
       list(

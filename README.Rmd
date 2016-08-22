@@ -52,15 +52,21 @@ install.packages(
 
 The following will:
 
+- git pull from remote
 - check the package using `devtools::check()`
 - then (if no errors and warnings were produced) build it into a temporary directory using `devtools::build()`
 - then insert it into the drat repo (defaults to `~/git/drat`) using `drat::insertPackage()`
+- git add all files
+- git commit with appropriate message
+- git push to remote
 
 
 
 ```{r, eval=FALSE}
-dratful::drat()
+dratful::dratful()
 ```
+
+
 
 If less defaults and more fine control is needed `check_build_publish()` is a version of drat that allows to manipulate options for all three wrapped up fucntions. 
 

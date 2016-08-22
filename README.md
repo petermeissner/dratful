@@ -4,7 +4,7 @@ Convenience wrapper for 'drat' and 'devtools'
 
 **Version**
 
-0.1.5
+0.1.6
 
 **Description**
 
@@ -19,7 +19,14 @@ MIT + file LICENSE
 (stable) developement versions:
 
 ``` r
-install.packages("dratful", repos = "https://petermeissner.github.io/drat/")
+install.packages(
+  "dratful",
+  repos = 
+    c(
+      options("repos")$repos, 
+      "https://petermeissner.github.io/drat/"
+    )
+)
 ```
 
 **Putting packages into your repository (your own CRAN, your drat, ...)**
@@ -31,7 +38,7 @@ The following will:
 -   then insert it into the drat repo (defaults to `~/git/drat`) using `drat::insertPackage()`
 
 ``` r
-dratful::drat()
+dratful::dratful()
 ```
 
 If less defaults and more fine control is needed `check_build_publish()` is a version of drat that allows to manipulate options for all three wrapped up fucntions.

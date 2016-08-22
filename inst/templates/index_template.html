@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <title>{{ content }}</title>
+    <link rel="stylesheet" type="text/css" href="https://cran.r-project.org/web/CRAN_web.css"/>
+  </head>
+
+  <body>
+
+    <h1>R-Package Repository</h1>
+
+
+    <h2>Description</h2>
+    'drats' are personal R package repositories hosted via Github and using the <a href="</a>https://github.com/eddelbuettel/drat">drat</a> package to
+
+     and <a href="https://github.com/petermeissner/dratful">petermeissner/dratful</a> to learn more.</p>
+
+
+    <h2>Installation</h2>
+    <p>To install from an personal R package repository like this, use the following code:</p>
+
+    <pre>
+    install.packages(
+      pkgs  = "package_name",
+      repos =
+        c(
+          options("repos")$repos,
+          "path_to_repository"
+        )
+    )
+    </pre>
+
+    <h2>Content<h2>
+
+      {{ content }}
+
+  </body>
+</html>

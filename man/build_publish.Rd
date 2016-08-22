@@ -22,10 +22,10 @@ the parent directory of the package.}
 \item{repodir}{A local directory corresponding to the repository
 top-level directory.}
 
-\item{action}{A character string containing one of: \dQuote{none}
-(the default; add the new package into the repo, effectively masking
-previous versions), \dQuote{archive} (place any previous versions into
-a package-specific archive folder, creating such an archive if it does
+\item{action}{A character string containing one of: \dQuote{none} 
+(the default; add the new package into the repo, effectively masking 
+previous versions), \dQuote{archive} (place any previous versions into 
+a package-specific archive folder, creating such an archive if it does 
 not already exist), or \dQuote{prune} (calling \code{\link{pruneRepo}}).}
 
 \item{commit}{Either boolean toggle to select automatic git operations
